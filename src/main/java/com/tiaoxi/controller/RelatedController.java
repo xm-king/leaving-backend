@@ -22,7 +22,7 @@ public class RelatedController {
     @ResponseBody
     public String bind(@RequestParam("openid") String openId,
                        @RequestParam("name") String name){
-        jdbcTemplate.update("INSERT INTO `RelatedBaby` ( `openId`, `babyName`, `created`)VALUES(?,?,?)",
+        jdbcTemplate.update("INSERT INTO `RelatedBaby` ( `openId`, `name`, `created`)VALUES(?,?,?)",
                 openId,name,(int)(System.currentTimeMillis()/1000));
         return "success";
     }
