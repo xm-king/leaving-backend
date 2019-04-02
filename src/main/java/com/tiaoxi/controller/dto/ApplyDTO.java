@@ -10,24 +10,46 @@ public class ApplyDTO implements Serializable{
 
     private static final long serialVersionUID = -6128093549409827116L;
 
-    private Integer number;
+    private int id;
+
+    private String openId;
 
     private String name;
 
-    private int startTime;
+    private String telephone;
 
-    private int endTime;
+    private Integer startTime;
 
-    private String applyer;
+    private Integer endTime;
 
-    private String telphone;
+    private Integer status;
 
-    public Integer getNumber() {
-        return number;
+    private Integer created;
+
+    private Integer updated;
+
+    public int getId() {
+        return id;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getName() {
@@ -38,35 +60,58 @@ public class ApplyDTO implements Serializable{
         this.name = name;
     }
 
-    public int getStartTime() {
+    public Integer getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(int startTime) {
+    public void setStartTime(Integer startTime) {
         this.startTime = startTime;
     }
 
-    public int getEndTime() {
+    public Integer getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(int endTime) {
+    public void setEndTime(Integer endTime) {
         this.endTime = endTime;
     }
 
-    public String getApplyer() {
-        return applyer;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setApplyer(String applyer) {
-        this.applyer = applyer;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
-    public String getTelphone() {
-        return telphone;
+    public Integer getCreated() {
+        return created;
     }
 
-    public void setTelphone(String telphone) {
-        this.telphone = telphone;
+    public void setCreated(Integer created) {
+        this.created = created;
+    }
+
+    public Integer getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Integer updated) {
+        this.updated = updated;
+    }
+
+    @Override
+    public String toString() {
+        return "ApplyDTO{" +
+                "id=" + id +
+                ", openId='" + openId + '\'' +
+                ", name='" + name + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", status=" + status +
+                ", created=" + created +
+                ", updated=" + updated +
+                '}';
     }
 }
