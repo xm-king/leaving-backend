@@ -43,9 +43,16 @@ public class StudentController {
     @ResponseBody
     public String bind(@RequestParam("openid") String openId,
                        @RequestParam("name") String name){
-        jdbcTemplate.update("INSERT INTO `RelatedBaby` ( `openId`, `name`, `created`)VALUES(?,?,?)",
-                openId,name,(int)(System.currentTimeMillis()/1000));
-        return "success";
+        JSONObject response = new JSONObject();
+        try{
+            jdbcTemplate.update("INSERT INTO `RelatedBaby` ( `openId`, `name`, `created`)VALUES(?,?,?)",
+                    openId,name,getCurrentTime());
+            response.put("result",true);
+        }catch (Exception exception){
+            LOGGER.error("bind openId:{},name:{} exception",openId,name,exception);
+            response.put("result",false);
+        }
+        return response.toJSONString();
     }
 
     /**
@@ -57,12 +64,15 @@ public class StudentController {
     @ResponseBody
     public String update(@RequestParam("openid") String openId,
                        @RequestParam("nick") String nick){
+        JSONObject response = new JSONObject();
         try{
             jdbcTemplate.update("UPDATE UserLogin SET nick =? ,updated = ? WHERE openId = ? LIMIT 1",nick,getCurrentTime(),openId);
+            response.put("result",true);
         }catch (Exception ex){
+            response.put("result",false);
             LOGGER.error("update error,openId:{},nick:{}",openId,nick);
         }
-        return "SUCCESS";
+        return response.toJSONString();
     }
 
     /**
@@ -76,11 +86,16 @@ public class StudentController {
                         @RequestParam(name = "telephone",defaultValue = "",required = false)String telephone,
                         @RequestParam("startTime") String startTime,
                         @RequestParam("endTime") String endTime){
-        jdbcTemplate.update("INSERT INTO `LeavingApply` (`openid`, `name`, `telephone`, `startTime`, `endTime`, `created`, `updated`)" +
-                        "VALUES(?,?,?,?,?,?,?)",
-                new Object[]{openId,name,telephone,getTimestamp(startTime),getTimestamp(endTime),getCurrentTime(),getCurrentTime()});
         JSONObject response = new JSONObject();
-        response.put("result",true);
+        try{
+            jdbcTemplate.update("INSERT INTO `LeavingApply` (`openid`, `name`, `telephone`, `startTime`, `endTime`, `created`, `updated`)" +
+                            "VALUES(?,?,?,?,?,?,?)",
+                    new Object[]{openId,name,telephone,getTimestamp(startTime),getTimestamp(endTime),getCurrentTime(),getCurrentTime()});
+            response.put("result",true);
+        }catch (Exception exception){
+            response.put("result",false);
+            LOGGER.error("apply exception,openId:{},name:{},startTime:{},endTime:{}",openId,name,startTime,endTime,exception);
+        }
         return JSON.toJSONString(response);
     }
 

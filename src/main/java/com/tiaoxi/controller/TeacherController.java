@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.tiaoxi.Utils.getCurrentTime;
 import static com.tiaoxi.Utils.getFormatTime;
@@ -44,14 +43,21 @@ public class TeacherController {
     @Autowired
     MessageService messageService;
 
+    /**
+     * 检查老师身份
+     * @param openId
+     * @return
+     */
     @RequestMapping(value = "check",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String checkTeacherRole(@RequestParam("openid")String openId){
+        JSONObject response = new JSONObject();
         if(OPENIDS.contains(openId)){
-            return "YES";
+            response.put("result",true);
         }else{
-            return "NO";
+            response.put("result",false);
         }
+        return response.toJSONString();
     }
 
     /**
@@ -62,7 +68,6 @@ public class TeacherController {
     @ResponseBody
     public String getApplyList(){
         int nowTime = getCurrentTime();
-
         //截止到当前未审批的请假单
         List<ApplyDTO> list = new ArrayList<>();
         try {
@@ -119,6 +124,7 @@ public class TeacherController {
     @RequestMapping(value = "audit",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String auditApply(@RequestParam("applyId") Integer applyId){
+        JSONObject response = new JSONObject();
         try{
             int updateCount = jdbcTemplate.update("UPDATE LeavingApply SET status = ?,updated = ? WHERE id = ?",
                     2,getCurrentTime(),applyId);
@@ -128,9 +134,10 @@ public class TeacherController {
                         applyId);
                 messageService.sendMessage(applyDTO.getTelephone(),PARENT_TEMPLATE);
             }
-            return "SUCCESS";
+            response.put("result",true);
         }catch (Exception exception){
-            return "FAIL";
+            response.put("result",false);
         }
+        return response.toJSONString();
     }
 }
