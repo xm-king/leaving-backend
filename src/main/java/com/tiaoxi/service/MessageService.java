@@ -6,6 +6,8 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MessageService {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
 
     public static final String TEACHER_TEMPLATE = "SMS_162524078";
 
@@ -25,24 +29,29 @@ public class MessageService {
 
     private static final String SECRET = "UckPg6kXo3nZZbL8cxeicXYsXQy0AC";
 
-    public void sendMessage(String telephone,String templateCode) throws Exception {
-        DefaultProfile profile = DefaultProfile.getProfile(REGION_ID,
-                ACCESS_KEY,
-                SECRET);
-        IAcsClient client = new DefaultAcsClient(profile);
+    public void sendMessage(String telephone,String templateCode){
+        try{
+            DefaultProfile profile = DefaultProfile.getProfile(REGION_ID,
+                    ACCESS_KEY,
+                    SECRET);
+            IAcsClient client = new DefaultAcsClient(profile);
 
-        CommonRequest request = new CommonRequest();
-        //request.setProtocol(ProtocolType.HTTPS);
-        request.setMethod(MethodType.POST);
-        request.setDomain("dysmsapi.aliyuncs.com");
-        request.setVersion("2017-05-25");
-        request.setAction("SendSms");
-        request.putQueryParameter("PhoneNumbers", telephone);
-        request.putQueryParameter("SignName", "苕溪幼儿园小十班");
-        request.putQueryParameter("TemplateCode", templateCode);
+            CommonRequest request = new CommonRequest();
+            //request.setProtocol(ProtocolType.HTTPS);
+            request.setMethod(MethodType.POST);
+            request.setDomain("dysmsapi.aliyuncs.com");
+            request.setVersion("2017-05-25");
+            request.setAction("SendSms");
+            request.putQueryParameter("PhoneNumbers", telephone);
+            request.putQueryParameter("SignName", "苕溪幼儿园小十班");
+            request.putQueryParameter("TemplateCode", templateCode);
 
-        CommonResponse response = client.getCommonResponse(request);
-        System.out.println(response.getData());
+            CommonResponse response = client.getCommonResponse(request);
+            System.out.println(response);
+        }catch (Exception exception){
+            LOGGER.error("sendMessage exception,telephone:{},templateCode:{}",telephone,templateCode,exception);
+        }
+
     }
 
     public static void main(String[] args) throws Exception {

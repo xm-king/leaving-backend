@@ -49,6 +49,23 @@ public class StudentController {
     }
 
     /**
+     * 微信和宝贝绑定
+     * @param openId
+     * @return
+     */
+    @RequestMapping("update")
+    @ResponseBody
+    public String update(@RequestParam("openid") String openId,
+                       @RequestParam("nick") String nick){
+        try{
+            jdbcTemplate.update("UPDATE UserLogin SET nick =? ,updated = ? WHERE openId = ? LIMIT 1",nick,getCurrentTime(),openId);
+        }catch (Exception ex){
+            LOGGER.error("update error,openId:{},nick:{}",openId,nick);
+        }
+        return "SUCCESS";
+    }
+
+    /**
      * 请假申请
      * @return
      */
