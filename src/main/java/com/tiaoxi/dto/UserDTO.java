@@ -1,4 +1,4 @@
-package com.tiaoxi.controller.dto;
+package com.tiaoxi.dto;
 
 import java.io.Serializable;
 
@@ -13,6 +13,7 @@ public class UserDTO implements Serializable{
     private String nick;
     private int created;
     private int updated;
+    private int type;
 
     public int getId() {
         return id;
@@ -54,6 +55,14 @@ public class UserDTO implements Serializable{
         this.updated = updated;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -62,6 +71,7 @@ public class UserDTO implements Serializable{
                 ", nick='" + nick + '\'' +
                 ", created=" + created +
                 ", updated=" + updated +
+                ", type=" + type +
                 '}';
     }
 }

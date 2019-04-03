@@ -1,6 +1,6 @@
 package com.tiaoxi;
 
-import com.tiaoxi.controller.dto.ApplyDTO;
+import com.tiaoxi.dto.ApplyDTO;
 import com.tiaoxi.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class FixedSchdulerJob{
             LOGGER.error("getApplyList {},exception",nowTime,e);
         }
         if(!CollectionUtils.isEmpty(list)){
-            messageService.sendMessage("13989828440",TEACHER_TEMPLATE);
+            //messageService.sendMessage("13989828440",TEACHER_TEMPLATE);
         }
     }
 }

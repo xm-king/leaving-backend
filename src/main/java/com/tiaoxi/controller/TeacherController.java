@@ -2,7 +2,8 @@ package com.tiaoxi.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.tiaoxi.controller.dto.ApplyDTO;
+import com.tiaoxi.dto.ApplyDTO;
+import com.tiaoxi.dto.UserDTO;
 import com.tiaoxi.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,14 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static com.tiaoxi.Utils.getCurrentTime;
 import static com.tiaoxi.Utils.getFormatTime;
@@ -35,8 +35,6 @@ public class TeacherController {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(TeacherController.class);
 
-    public static final List<String> OPENIDS = Arrays.asList("o3Kjy5IKTEnSTNWWOrJTL20Q34wo");
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -51,8 +49,14 @@ public class TeacherController {
     @RequestMapping(value = "check",produces = "application/json;charset=utf-8")
     @ResponseBody
     public String checkTeacherRole(@RequestParam("openid")String openId){
+        UserDTO userDTO = null;
+        try{
+            userDTO = jdbcTemplate.queryForObject("SELECT * FROM UserLogin WHERE openId=? AND type = 1 LIMIT 1",new BeanPropertyRowMapper<UserDTO>(UserDTO.class),openId);
+        }catch (Exception exception){
+            LOGGER.info("query UserDTO exception,openId:{}",openId,exception);
+        }
         JSONObject response = new JSONObject();
-        if(OPENIDS.contains(openId)){
+        if(null != userDTO){
             response.put("result",true);
         }else{
             response.put("result",false);
@@ -132,7 +136,11 @@ public class TeacherController {
                 ApplyDTO applyDTO = jdbcTemplate.queryForObject("SELECT * FROM LeavingApply WHERE id = ?",
                         new BeanPropertyRowMapper<ApplyDTO>(ApplyDTO.class),
                         applyId);
-                messageService.sendMessage(applyDTO.getTelephone(),PARENT_TEMPLATE);
+                if(!StringUtils.isEmpty(applyDTO.getTelephone())){
+                    Map<String,Object> params = new HashMap<>();
+                    params.put("name",applyDTO.getName());
+                    messageService.sendMessage(applyDTO.getTelephone(),PARENT_TEMPLATE,params);
+                }
             }
             response.put("result",true);
         }catch (Exception exception){

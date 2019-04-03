@@ -2,7 +2,9 @@ package com.tiaoxi.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.tiaoxi.controller.dto.ApplyDTO;
+import com.aliyuncs.utils.StringUtils;
+import com.tiaoxi.dto.ApplyDTO;
+import com.tiaoxi.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.tiaoxi.Utils.*;
+import static com.tiaoxi.service.MessageService.TEACHER_TEMPLATE;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -32,6 +35,9 @@ public class StudentController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private MessageService messageService;
 
     /**
      * 微信和宝贝绑定
@@ -91,6 +97,8 @@ public class StudentController {
             jdbcTemplate.update("INSERT INTO `LeavingApply` (`openid`, `name`, `telephone`, `startTime`, `endTime`, `created`, `updated`)" +
                             "VALUES(?,?,?,?,?,?,?)",
                     new Object[]{openId,name,telephone,getTimestamp(startTime),getTimestamp(endTime),getCurrentTime(),getCurrentTime()});
+            //通知老师
+            messageService.sendMessage("13989828440",TEACHER_TEMPLATE,new HashMap<String,Object>());
             response.put("result",true);
         }catch (Exception exception){
             response.put("result",false);

@@ -1,4 +1,4 @@
-package com.tiaoxi.controller.dto;
+package com.tiaoxi.dto;
 
 import java.io.Serializable;
 
