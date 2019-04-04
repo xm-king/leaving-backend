@@ -52,7 +52,7 @@ public class MessageService {
             request.putBodyParameter("TemplateParam", JSON.toJSON(params));
 
             CommonResponse response = client.getCommonResponse(request);
-            LOGGER.error("sendMessage: telephone:{},templateCode:{},params:{}",telphones,templateCode,params);
+            LOGGER.error("sendMessage: telephone:{},templateCode:{},params:{},response:{}",telphones,templateCode,params,response.getData());
         }catch (Exception exception){
             LOGGER.error("sendMessage exception,templateCode:{}",templateCode,exception);
         }
