@@ -5,7 +5,7 @@
 
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<Encoding>UTF-8</Encoding>
-		<file>${CATALINA_APPLOG}/leaving-backend.log</file>
+		<file>logs/leaving-backend.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>logs/leaving-backend_%d{yyyy_MM_dd}-%i.log.gz</FileNamePattern>
 			<MaxHistory>10</MaxHistory>
