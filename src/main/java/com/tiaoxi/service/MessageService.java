@@ -23,9 +23,9 @@ public class MessageService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
 
-    public static final String TEACHER_TEMPLATE = "SMS_162524078";
+    public static final String SEND_TEACHER_TEMPLATE = "SMS_162524078";
 
-    public static final String PARENT_TEMPLATE = "SMS_162630625";
+    public static final String SEND_PARENT_TEMPLATE = "SMS_162630625";
 
     public static final String REGION_ID = "default";
 
@@ -52,7 +52,7 @@ public class MessageService {
             request.putBodyParameter("TemplateParam", JSON.toJSON(params));
 
             CommonResponse response = client.getCommonResponse(request);
-            System.out.println(response.getData());
+            LOGGER.error("sendMessage: telephone:{},templateCode:{},params:{}",telphones,templateCode,params);
         }catch (Exception exception){
             LOGGER.error("sendMessage exception,templateCode:{}",templateCode,exception);
         }
@@ -60,7 +60,7 @@ public class MessageService {
 
     public static void main(String[] args) {
         MessageService messageService = new MessageService();
-        messageService.sendMessage("13989828440",PARENT_TEMPLATE,new HashMap<String,Object>(){{
+        messageService.sendMessage("13989828440", SEND_PARENT_TEMPLATE,new HashMap<String,Object>(){{
             put("name","相家喻");
         }});
     }

@@ -2,7 +2,6 @@ package com.tiaoxi.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.aliyuncs.utils.StringUtils;
 import com.tiaoxi.dto.ApplyDTO;
 import com.tiaoxi.service.MessageService;
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.tiaoxi.Utils.*;
-import static com.tiaoxi.service.MessageService.TEACHER_TEMPLATE;
+import static com.tiaoxi.service.MessageService.SEND_TEACHER_TEMPLATE;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -98,7 +97,7 @@ public class StudentController {
                             "VALUES(?,?,?,?,?,?,?)",
                     new Object[]{openId,name,telephone,getTimestamp(startTime),getTimestamp(endTime),getCurrentTime(),getCurrentTime()});
             //通知老师
-            messageService.sendMessage("13989828440",TEACHER_TEMPLATE,new HashMap<String,Object>());
+            messageService.sendMessage("13989828440", SEND_TEACHER_TEMPLATE,new HashMap<String,Object>());
             response.put("result",true);
         }catch (Exception exception){
             response.put("result",false);

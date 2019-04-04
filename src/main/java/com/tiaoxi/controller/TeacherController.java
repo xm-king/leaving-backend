@@ -22,7 +22,7 @@ import java.util.*;
 import static com.tiaoxi.Utils.getCurrentTime;
 import static com.tiaoxi.Utils.getFormatTime;
 import static com.tiaoxi.Utils.getStatusDesc;
-import static com.tiaoxi.service.MessageService.PARENT_TEMPLATE;
+import static com.tiaoxi.service.MessageService.SEND_PARENT_TEMPLATE;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -139,7 +139,7 @@ public class TeacherController {
                 if(!StringUtils.isEmpty(applyDTO.getTelephone())){
                     Map<String,Object> params = new HashMap<>();
                     params.put("name",applyDTO.getName());
-                    messageService.sendMessage(applyDTO.getTelephone(),PARENT_TEMPLATE,params);
+                    messageService.sendMessage(applyDTO.getTelephone(), SEND_PARENT_TEMPLATE,params);
                 }
             }
             response.put("result",true);

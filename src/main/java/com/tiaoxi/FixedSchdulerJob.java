@@ -13,7 +13,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import static com.tiaoxi.Utils.getCurrentTime;
-import static com.tiaoxi.service.MessageService.TEACHER_TEMPLATE;
 
 /**
  * @author pingchun@meili-inc.com
@@ -43,7 +42,7 @@ public class FixedSchdulerJob{
             LOGGER.error("getApplyList {},exception",nowTime,e);
         }
         if(!CollectionUtils.isEmpty(list)){
-            //messageService.sendMessage("13989828440",TEACHER_TEMPLATE);
+            //messageService.sendMessage("13989828440",SEND_TEACHER_TEMPLATE);
         }
     }
 }
