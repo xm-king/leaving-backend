@@ -34,7 +34,7 @@
 
     <task:scheduled-tasks>
         <task:scheduled ref="fixedSchdulerJob" method="checkApplyList"
-                        cron="0/20 * * * * ?"/>
+                        cron="0 0 0/4 * * ?"/>
     </task:scheduled-tasks>
 
 </beans>
